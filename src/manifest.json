@@ -1,0 +1,31 @@
+{
+  "id": "sp-customizable-dashboard",
+  "name": "Customizable dashboard Plugin",
+  "version": "0.0.1",
+  "manifestVersion": 1,
+  "minSupVersion": "18.0.0",
+  "description": "Customizable dashboard Plugin for Super Productivity",
+  "author": "DanyMint",
+  "homepage": "https://github.com/DanyMint/sp-customizable-dashboard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanyMint/sp-customizable-dashboard.git"
+  },
+  "permissions": [],
+  "hooks": [
+    "taskComplete",
+    "taskUpdate",
+    "contextChange"
+  ],
+  "iFrame": true,
+  "sidePanel": false,
+  "isSkipMenuEntry": false,
+  "icon": "icon.svg",
+  "i18n": {
+    "languages": [
+      "en",
+      "de",
+      "ru"
+    ]
+  }
+}
