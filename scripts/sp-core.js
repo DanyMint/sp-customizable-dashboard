@@ -59,6 +59,12 @@ async function setup() {
       if (fs.existsSync(dir)) {
         console.log(`- Removing: ${dir}`);
         fs.rmSync(dir, { recursive: true, force: true });
+
+        // Restore .gitkeep if sp-deps was removed
+        if (dir === DEPS_DEST) {
+          fs.mkdirSync(dir, { recursive: true });
+          fs.writeFileSync(path.join(dir, '.gitkeep'), '');
+        }
       }
     });
     console.log('\x1b[32m[CLEAN] Done.\x1b[0m');
