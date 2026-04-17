@@ -16,6 +16,20 @@ const PROJECT_ROOT = path.join(__dirname, '..');
 const DEPS_DEST = path.join(PROJECT_ROOT, 'sp-deps');
 
 /**
+ * Asserts that a path exists, otherwise throws a descriptive error
+ */
+function assertPathExists(filePath, context) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(
+      `Required artifact missing: ${filePath}\n` +
+      `Context: ${context}\n` +
+      `Hint: The build process might have failed or the cache is corrupted. ` +
+      `Try deleting the cache directory (rm -rf ${CACHE_DIR}) and running the script again, or check the 'npm run plugins:build' output above.`
+    );
+  }
+}
+
+/**
  * Executes a shell command with logging and error handling
  */
 function runCommand(command, options = {}) {
@@ -23,8 +37,8 @@ function runCommand(command, options = {}) {
   try {
     execSync(command, { stdio: 'inherit', ...options });
   } catch (error) {
-    console.error(`\x1b[31m[ERROR] Command failed: ${command}\x1b[0m`);
-    process.exit(1);
+    // Throwing error to be caught by the global setup().catch()
+    throw new Error(`Command execution failed: ${command}`);
   }
 }
 
@@ -75,14 +89,16 @@ async function setup() {
 
     // 3. Copying artifacts
     console.log('\n\x1b[33m[3/3] Copying artifacts to sp-deps...\x1b[0m');
+    
+    // Explicitly verify all sources before starting destructive operations (like rmSync)
+    packagesToCopy.forEach(pkg => {
+      const srcPath = path.join(CACHE_DIR, pkg.src);
+      assertPathExists(srcPath, `Source artifact for "${pkg.dest}" not found in cache after build step.`);
+    });
+
     packagesToCopy.forEach(pkg => {
       const srcPath = path.join(CACHE_DIR, pkg.src);
       const destPath = path.join(DEPS_DEST, pkg.dest);
-
-      if (!fs.existsSync(srcPath)) {
-        console.error(`\x1b[31mSource not found in cache: ${srcPath}\x1b[0m`);
-        process.exit(1);
-      }
 
       console.log(`Copying ${pkg.src} -> ${destPath}`);
       if (fs.existsSync(destPath)) {
@@ -104,4 +120,17 @@ async function setup() {
   console.log('\n\x1b[32m✅ Setup complete!\x1b[0m');
 }
 
-setup();
+/**
+ * Execution and Fatal Error Handling
+ */
+setup().catch(error => {
+  console.error('\n\x1b[31m[FATAL ERROR] The setup process failed unexpectedly!\x1b[0m');
+  console.error(`\x1b[31mReason: ${error.message}\x1b[0m`);
+  
+  if (error.stack) {
+    console.error('\n\x1b[2m--- Technical Details ---\x1b[0m');
+    console.error(error.stack);
+  }
+
+  process.exit(1);
+});
