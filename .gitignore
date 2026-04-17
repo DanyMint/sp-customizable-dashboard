@@ -28,3 +28,7 @@ yarn-error.log*
 
 # TypeScript cache
 *.tsbuildinfo
+
+# Super Productivity Dependencies
+sp-deps/*
+!sp-deps/.gitkeep
