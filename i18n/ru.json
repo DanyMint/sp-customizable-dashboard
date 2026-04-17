@@ -1,0 +1,30 @@
+{
+  "APP": {
+    "TITLE": "Плагин кастомизируемого дашборда",
+    "SUBTITLE": "Создано с помощью Super Productivity Plugin API"
+  },
+  "STATS": {
+    "TOTAL_TASKS": "Всего задач",
+    "COMPLETED_TODAY": "Завершено сегодня",
+    "PENDING": "В ожидании"
+  },
+  "TASK": {
+    "CREATE_NEW": "Создать новую задачу",
+    "ENTER_TITLE": "Введите название задачи...",
+    "NO_PROJECT": "Без проекта",
+    "CREATE_BUTTON": "Создать задачу",
+    "RECENT_TASKS": "Последние задачи",
+    "CREATED_SUCCESS": "Задача \"{{title}}\" создана!"
+  },
+  "SETTINGS": {
+    "TITLE": "Настройки",
+    "THEME": "Тема",
+    "THEME_LIGHT": "Светлая",
+    "THEME_DARK": "Темная",
+    "SHOW_COMPLETED": "Показывать завершенные задачи"
+  },
+  "BUTTONS": {
+    "REFRESH": "Обновить данные"
+  },
+  "LOADING": "Загрузка..."
+}

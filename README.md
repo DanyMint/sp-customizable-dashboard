@@ -1,6 +1,6 @@
-# Solid.js Boilerplate Plugin for Super Productivity
+# Customizable Dashboard Plugin for Super Productivity
 
-A modern, TypeScript-based boilerplate for creating Super Productivity plugins using Solid.js.
+A modern, TypeScript-based plugin for Super Productivity that provides a customizable dashboard using Solid.js.
 
 ## Features
 
@@ -20,24 +20,26 @@ A modern, TypeScript-based boilerplate for creating Super Productivity plugins u
 
 ### Installation
 
-1. Clone this boilerplate:
+1. Clone this repository:
 
 ```bash
-cd packages/plugin-dev
-cp -r boilerplate-solid-js my-plugin
-cd my-plugin
+git clone https://github.com/DanyMint/sp-customizable-dashboard.git
+cd sp-customizable-dashboard
 ```
 
-2. Install dependencies:
+2. Run the dependencies setup script:
 
 ```bash
-npm install
+npm run sp-deps:install
 ```
 
-3. Update plugin metadata in `src/manifest.json`:
-   - Change `id` to a unique identifier
-   - Update `name`, `description`, and `author`
-   - Modify `permissions` and `hooks` as needed
+This script will:
+- Clone the Super Productivity core repository to a local cache
+- Build the required plugin API and Vite plugin
+- Copy these dependencies to the `sp-deps/` directory
+- Install all project dependencies
+
+3. Update plugin metadata in `src/manifest.json` if needed.
 
 ### Development
 
@@ -70,24 +72,8 @@ npm run package
 This will:
 
 1. Build the plugin
-2. Create a ZIP file containing all necessary files
+2. Create a ZIP file containing all necessary files (e.g., `sp-customizable-dashboard-v0.0.1.zip`)
 3. Place the ZIP in the root directory
-
-### Deployment (for Plugins with HTML UI)
-
-If your plugin has an `index.html` file (for UI components, side panels, etc.), use the deploy command instead:
-
-```bash
-npm run deploy
-```
-
-This will:
-
-1. Build the plugin
-2. Inline all CSS and JavaScript assets into the HTML file
-3. Create a ZIP file for distribution
-
-**Note**: The `deploy` command is necessary for any plugin with HTML UI because Super Productivity loads plugin HTML as data URLs, which cannot access external files. The inline-assets script ensures all assets are embedded directly in the HTML.
 
 ## Project Structure
 
@@ -101,24 +87,24 @@ src/
 ├── utils/           # Helper utilities
 │   └── useTranslate.ts  # i18n hook for translations
 ├── index.html       # Plugin UI entry point
-├── index.ts         # UI initialization
+├── index.tsx        # UI initialization
 ├── plugin.ts        # Plugin logic and API integration
 └── manifest.json    # Plugin metadata
 
 i18n/                # Translation files (optional)
 ├── en.json          # English translations (required)
-└── de.json          # German translations (example)
+├── de.json          # German translations (example)
+└── ru.json          # Russian translations
+
+sp-deps/            # Local copies of Super Productivity plugin dependencies
+├── plugin-api/     # @super-productivity/plugin-api
+└── vite-plugin/    # @super-productivity/vite-plugin
 
 scripts/            # Build and utility scripts
-└── build-plugin.js  # Plugin packaging script
+├── build-plugin.js  # Plugin packaging script
+└── sp-core.js       # Dependency sync and setup script
 
 dist/               # Build output (gitignored)
-├── assets/
-├── i18n/           # Copied translation files
-├── index.html
-├── index.js
-├── plugin.js
-└── manifest.json
 ```
 
 ## Internationalization (i18n)
