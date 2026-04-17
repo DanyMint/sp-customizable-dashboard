@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "package": "node scripts/build-plugin.js",
+    "sp-deps:install": "node scripts/sp-core.js",
     "deploy": "npm run build"
   },
   "workspaces": [
