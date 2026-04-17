@@ -46,6 +46,28 @@ function runCommand(command, options = {}) {
  * Main setup process
  */
 async function setup() {
+  const args = process.argv.slice(2);
+  if (args.includes('--clean')) {
+    console.log('\x1b[33m[CLEAN] Removing local and cached artifacts...\x1b[0m');
+    const toRemove = [
+      DEPS_DEST,
+      CACHE_DIR,
+      path.join(PROJECT_ROOT, 'node_modules')
+    ];
+
+    toRemove.forEach(dir => {
+      if (fs.existsSync(dir)) {
+        console.log(`- Removing: ${dir}`);
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    });
+    console.log('\x1b[32m[CLEAN] Done.\x1b[0m');
+
+    if (args.length === 1 && args[0] === '--clean') {
+      return;
+    }
+  }
+
   const packagesToCopy = [
     { src: 'packages/plugin-api', dest: 'plugin-api' },
     { src: 'packages/vite-plugin', dest: 'vite-plugin' }
@@ -53,7 +75,8 @@ async function setup() {
 
   // BOTTOM-UP CHECK: Check if local sp-deps are already populated
   const allArtifactsPresent = packagesToCopy.every(pkg => 
-    fs.existsSync(path.join(DEPS_DEST, pkg.dest, 'package.json'))
+    fs.existsSync(path.join(DEPS_DEST, pkg.dest, 'package.json')) &&
+    fs.existsSync(path.join(DEPS_DEST, pkg.dest, 'dist'))
   );
 
   if (allArtifactsPresent) {
@@ -78,14 +101,18 @@ async function setup() {
       console.log('\x1b[32m[SKIP] Cache dependencies already installed\x1b[0m');
     }
 
-    // Build plugins check (verifying dist folder in one of the packages)
-    const pluginApiDist = path.join(CACHE_DIR, 'packages/plugin-api/dist');
-    if (!fs.existsSync(pluginApiDist)) {
-      console.log('\x1b[33mBuilding plugins...\x1b[0m');
-      runCommand('npm run plugins:build', { cwd: CACHE_DIR });
-    } else {
-      console.log('\x1b[32m[SKIP] Plugins already built\x1b[0m');
-    }
+    // Build plugins check (verifying dist folder for each package)
+    packagesToCopy.forEach(pkg => {
+      const pkgPath = path.join(CACHE_DIR, pkg.src);
+      const distPath = path.join(pkgPath, 'dist');
+
+      if (!fs.existsSync(distPath)) {
+        console.log(`\x1b[33mBuilding package: ${pkg.src}...\x1b[0m`);
+        runCommand('npm run build', { cwd: pkgPath });
+      } else {
+        console.log(`\x1b[32m[SKIP] Package ${pkg.src} already built\x1b[0m`);
+      }
+    });
 
     // 3. Copying artifacts
     console.log('\n\x1b[33m[3/3] Copying artifacts to sp-deps...\x1b[0m');

@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "package": "node scripts/build-plugin.js",
     "sp-deps:install": "node scripts/sp-core.js",
+    "sp-deps:clean": "node scripts/sp-core.js --clean",
     "deploy": "npm run build"
   },
   "workspaces": [
