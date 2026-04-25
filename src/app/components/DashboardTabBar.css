@@ -1,0 +1,66 @@
+/* Dashboard Tab Bar styling */
+.dashboard-tab-bar {
+  display: flex;
+  align-items: flex-end;
+  background: var(--header-bg, #f5f5f5);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  margin-right: 2px;
+  background: var(--tab-bg, #e0e0e0);
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab.active {
+  background: var(--tab-active-bg, #ffffff);
+  border-bottom: 1px solid var(--bg-color, #ffffff);
+  font-weight: 600;
+}
+
+.tab:hover {
+  background: var(--tab-hover-bg, #d5d5d5);
+}
+
+.tab input {
+  font-size: 0.9rem;
+  padding: 2px 4px;
+}
+
+.tab .close,
+.tab .rename {
+  background: none;
+  border: none;
+  margin-left: 4px;
+  color: var(--text-secondary, #666);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tab .close:hover,
+.tab .rename:hover {
+  color: var(--text-primary, #000);
+}
+
+.add {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  margin-left: auto;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--primary-color, #2196f3);
+}
+
+.add:hover {
+  background: var(--tab-hover-bg, #d5d5d5);
+  border-radius: 4px;
+}

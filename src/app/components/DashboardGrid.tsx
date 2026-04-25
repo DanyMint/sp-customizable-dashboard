@@ -1,5 +1,5 @@
 import { For } from 'solid-js';
-import type { Dashboard } from '../../store/types';
+import type { Dashboard, Card } from '../../store/types';
 import CardComponent from './Card';
 import './DashboardGrid.css';
 
@@ -27,6 +27,23 @@ export default function DashboardGrid(props: { dashboard: Dashboard }) {
   const parseSize = (size: string) => {
     const [c, r] = size.split('x').map((v) => parseInt(v, 10));
     return { cols: c, rows: r };
+  };
+
+  const handleDrop = async (e: DragEvent) => {
+    const cardId = e.dataTransfer?.getData('text/plain');
+    if (!cardId) return;
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+    const col = Math.floor(offsetX / (cellSize + gap));
+    const row = Math.floor(offsetY / (cellSize + gap));
+    const card = props.dashboard.cards.find((c) => c.id === cardId);
+    if (!card) return;
+    const newPos = { col, row };
+    const fits = canPlaceCard(props.dashboard.cards, newPos, card.size, card.id);
+    if (fits) {
+      await updateCard(props.dashboard.id, card.id, { position: newPos });
+    }
   };
 
   return (
