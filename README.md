@@ -7,6 +7,7 @@ A modern, TypeScript-based plugin for Super Productivity that provides a customi
 - 🚀 **Solid.js** - Fast, reactive UI framework
 - 📘 **TypeScript** - Full type safety with Super Productivity Plugin API
 - 🎨 **Modern UI** - Clean, responsive design with dark mode support
+- 📊 **Dashboard UI** - Customizable dashboard with tabs, grid layout, and draggable cards
 - 🔧 **Vite** - Lightning-fast development and build tooling
 - 📦 **Ready to Use** - Complete setup with examples for all plugin features
 
