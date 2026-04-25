@@ -9,34 +9,18 @@ import type { PluginHooks } from '@super-productivity/plugin-api';
 declare const plugin: PluginAPI;
 
 // Plugin initialization
-plugin.log.info('Boilerplate plugin initialized');
+plugin.log.info('Customizable dashboard plugin initialized');
 
-// Example: Register a header button
-plugin.registerHeaderButton({
-  icon: 'rocket',
-  label: 'Open Boilerplate Plugin',
-  onClick: () => {
-    plugin.showIndexHtmlAsView();
-  },
-});
 
 // Example: Register a menu entry
 plugin.registerMenuEntry({
-  label: 'Boilerplate Plugin',
+  label: 'Dashboard Plugin',
   icon: 'rocket',
   onClick: () => {
     plugin.showIndexHtmlAsView();
   },
 });
 
-// Example: Register keyboard shortcut
-plugin.registerShortcut({
-  id: 'open-boilerplate-plugin',
-  label: 'Open Boilerplate Plugin',
-  onExec: () => {
-    plugin.showIndexHtmlAsView();
-  },
-});
 
 // Example: Hook into task completion
 plugin.registerHook(PluginHooks.TASK_COMPLETE, (taskData: TaskCompletePayload) => {
