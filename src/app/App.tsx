@@ -1,7 +1,10 @@
 import { createSignal, createEffect, For, Show, onMount } from 'solid-js';
+import { loadDashboards } from '../store/dashboardStore';
 import { Task, Project } from '@super-productivity/plugin-api';
 import { useTranslate } from '../utils/useTranslate';
 import './App.css';
+import DashboardTabBar from './components/DashboardTabBar';
+import DashboardView from './components/DashboardView';
 
 // Communication with plugin.js
 const sendMessage = async (type: string, payload?: any) => {
@@ -21,6 +24,8 @@ const sendMessage = async (type: string, payload?: any) => {
 };
 
 function App() {
+  // Load dashboards when app starts
+  loadDashboards();
   const t = useTranslate();
   const [tasks, setTasks] = createSignal<Task[]>([]);
   const [projects, setProjects] = createSignal<Project[]>([]);
@@ -145,98 +150,8 @@ function App() {
         when={isLoading()}
         fallback={
           <main class="app-main">
-            {/* Stats Section */}
-            <section class="stats-section">
-              <div class="stat-card">
-                <div class="stat-value">{stats().totalTasks}</div>
-                <div class="stat-label">{totalTasksLabel()}</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">{stats().completedToday}</div>
-                <div class="stat-label">{completedTodayLabel()}</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value">{stats().pendingTasks}</div>
-                <div class="stat-label">{pendingLabel()}</div>
-              </div>
-            </section>
-
-            {/* Create Task Section */}
-            <section class="create-task-section">
-              <h2>{createNewLabel()}</h2>
-              <div class="create-task-form">
-                <input
-                  type="text"
-                  placeholder={taskPlaceholder()}
-                  value={newTaskTitle()}
-                  onInput={(e) => setNewTaskTitle(e.currentTarget.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && createTask()}
-                  class="task-input"
-                />
-                <select
-                  value={selectedProjectId()}
-                  onChange={(e) => setSelectedProjectId(e.currentTarget.value)}
-                  class="project-select"
-                >
-                  <option value="">{noProjectLabel()}</option>
-                  <For each={projects()}>
-                    {(project) => <option value={project.id}>{project.title}</option>}
-                  </For>
-                </select>
-                <button onClick={createTask} class="create-btn">
-                  {createButtonLabel()}
-                </button>
-              </div>
-            </section>
-
-            {/* Tasks List Section */}
-            <section class="tasks-section">
-              <h2>Recent Tasks</h2>
-              <div class="tasks-list">
-                <For each={tasks().slice(0, 10)}>
-                  {(task) => (
-                    <div class="task-item" classList={{ completed: task.isDone }}>
-                      <span class="task-title">{task.title}</span>
-                      <Show when={task.projectId}>
-                        <span class="task-project">
-                          {projects().find((p) => p.id === task.projectId)?.title}
-                        </span>
-                      </Show>
-                    </div>
-                  )}
-                </For>
-              </div>
-            </section>
-
-            {/* Settings Section */}
-            <section class="settings-section">
-              <h2>Settings</h2>
-              <div class="settings-form">
-                <label class="setting-item">
-                  <span>Theme:</span>
-                  <select
-                    value={settings().theme}
-                    onChange={(e) => setSettings({ ...settings(), theme: e.currentTarget.value })}
-                  >
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                  </select>
-                </label>
-                <label class="setting-item">
-                  <input
-                    type="checkbox"
-                    checked={settings().showCompleted}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings(),
-                        showCompleted: e.currentTarget.checked,
-                      })
-                    }
-                  />
-                  <span>Show completed tasks</span>
-                </label>
-              </div>
-            </section>
+            <DashboardTabBar />
+            <DashboardView />
           </main>
         }
       >
