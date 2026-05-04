@@ -26,6 +26,10 @@ function genId(): string {
 /** Add a new dashboard, make it active, and return it */
 export async function addDashboard(name = 'New Dashboard'): Promise<Dashboard> {
   const newDashboard: Dashboard = {
+    title: name,
+    isActive: false,
+    updatedAt: Date.now(),
+
     id: genId(),
     name,
     cards: [],
