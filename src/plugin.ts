@@ -11,6 +11,22 @@ declare const plugin: PluginAPI;
 // Plugin initialization
 plugin.log.info('Customizable dashboard plugin initialized');
 
+// Load persisted dashboard state on startup
+import { loadDashboardState, saveDashboardState } from './utils/persistence';
+import { dashboardState, setDashboardState } from './store/dashboardStore';
+
+(async () => {
+  const persisted = await loadDashboardState();
+  if (persisted) {
+    // Assume persisted matches DashboardState shape
+    setDashboardState(persisted as any);
+    plugin.log.info('Dashboard state restored from persistence');
+  } else {
+    // Initialize empty state if none persisted
+    setDashboardState({ dashboards: [], activeDashboardId: null });
+  }
+})();
+
 
 // Example: Register a menu entry
 plugin.registerMenuEntry({

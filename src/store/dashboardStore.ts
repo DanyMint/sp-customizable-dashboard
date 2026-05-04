@@ -23,7 +23,8 @@ function genId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
 }
 
-export async function addDashboard(name = 'New Dashboard'): Promise<void> {
+/** Add a new dashboard, make it active, and return it */
+export async function addDashboard(name = 'New Dashboard'): Promise<Dashboard> {
   const newDashboard: Dashboard = {
     id: genId(),
     name,
@@ -32,14 +33,30 @@ export async function addDashboard(name = 'New Dashboard'): Promise<void> {
   };
   await repository.save(newDashboard);
   setDashboardState('dashboards', (ds) => [...ds, newDashboard]);
+  // Activate new dashboard
+  await setActiveDashboard(newDashboard.id);
 }
 
+/** Delete a dashboard. If it was active, select nearest neighbor or first remaining. */
 export async function deleteDashboard(id: string): Promise<void> {
   await repository.delete(id);
+  // Update store without the deleted dashboard
   setDashboardState('dashboards', (ds) => ds.filter((d) => d.id !== id));
-  if (dashboardState.activeDashboardId === id) {
-    await repository.setActiveDashboardId(null);
-    setDashboardState('activeDashboardId', null);
+
+  const wasActive = dashboardState.activeDashboardId === id;
+  if (wasActive) {
+    const remaining = dashboardState.dashboards.filter((d) => d.id !== id);
+    let newActiveId: string | null = null;
+    if (remaining.length) {
+      // Find index of deleted dashboard in previous list to pick neighbor
+      const allIds = dashboardState.dashboards.map((d) => d.id);
+      const idx = allIds.indexOf(id);
+      // Prefer previous dashboard, else next, else first
+      if (idx > 0) newActiveId = allIds[idx - 1];
+      else if (idx === 0 && allIds.length > 1) newActiveId = allIds[1];
+      else newActiveId = remaining[0].id;
+    }
+    await setActiveDashboard(newActiveId);
   }
 }
 

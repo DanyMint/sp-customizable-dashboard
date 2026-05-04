@@ -4,7 +4,7 @@ import CardComponent from './Card';
 import './DashboardGrid.css';
 
 import { updateCard } from '../../store/dashboardStore';
-import { canPlaceCard } from '../../store/gridUtils';
+import { canPlaceCard } from '../../utils/gridUtils';
 export default function DashboardGrid(props: { dashboard: Dashboard }) {
   const cellSize = 80; // px per grid unit
   const gap = 8;
