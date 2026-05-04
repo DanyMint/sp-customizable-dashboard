@@ -12,23 +12,14 @@ export interface CardSettings {
 }
 
 export interface Card {
-  /** Human‑readable title of the card */
-  title?: string;
-  /** Creation timestamp (ISO string) */
-  createdAt?: number;
-  /** Last update timestamp (ISO string) */
-  updatedAt?: number;
-  /** Human‑readable title of the card */
-  title: string;
-  /** Creation timestamp (ISO string) */
-  createdAt: number;
-  /** Last update timestamp (ISO string) */
-  updatedAt: number;
   id: string;
+  title: string;
   type: CardType;
   size: CardSize;
   position: CardPosition;
   settings: CardSettings;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface Dashboard {
