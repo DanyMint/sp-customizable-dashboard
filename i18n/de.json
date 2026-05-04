@@ -26,5 +26,28 @@
   "BUTTONS": {
     "REFRESH": "Daten Aktualisieren"
   },
-  "LOADING": "Lädt..."
+  "LOADING": "Lädt...",
+    "DASHBOARD": {
+      "ADD": "Dashboard hinzufügen",
+      "RENAME": "Dashboard umbenennen",
+      "DELETE": "Dashboard löschen",
+      "EMPTY_MESSAGE": "Keine Dashboards vorhanden. Erstelle eines!"
+    },
+    "CARD": {
+      "ADD": "Karte hinzufügen",
+      "DELETE": "Karte löschen",
+      "EDIT": "Karte bearbeiten",
+      "TYPE": {
+        "HEATMAP": "Heatmap",
+        "CORRELATION": "Korrelation",
+        "PIE": "Kuchendiagramm"
+      },
+      "SIZE": {
+        "2x2": "2×2",
+        "2x3": "2×3",
+        "3x2": "3×2",
+        "2x6": "2×6",
+        "6x2": "6×2"
+      }
+    }
 }

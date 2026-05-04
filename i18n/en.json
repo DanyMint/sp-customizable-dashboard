@@ -26,5 +26,28 @@
   "BUTTONS": {
     "REFRESH": "Refresh Data"
   },
-  "LOADING": "Loading..."
+  "LOADING": "Loading...",
+    "DASHBOARD": {
+      "ADD": "Add Dashboard",
+      "RENAME": "Rename Dashboard",
+      "DELETE": "Delete Dashboard",
+      "EMPTY_MESSAGE": "No dashboards yet. Create one!"
+    },
+    "CARD": {
+      "ADD": "Add Card",
+      "DELETE": "Delete Card",
+      "EDIT": "Edit Card",
+      "TYPE": {
+        "HEATMAP": "Heatmap",
+        "CORRELATION": "Correlation",
+        "PIE": "Pie Chart"
+      },
+      "SIZE": {
+        "2x2": "2×2",
+        "2x3": "2×3",
+        "3x2": "3×2",
+        "2x6": "2×6",
+        "6x2": "6×2"
+      }
+    }
 }

@@ -19,7 +19,8 @@
   "workspaces": [
     "./sp-deps/*"
   ],
-  "devDependencies": {
+  "dependencies": { "uuid": "^9.0.0" },
+  "devDependencies": { "@types/uuid": "^9.0.0",
     "@super-productivity/plugin-api": "*",
     "@super-productivity/vite-plugin": "*",
     "@solidjs/router": "^0.15.4",
